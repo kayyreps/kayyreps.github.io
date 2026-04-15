@@ -6,32 +6,24 @@
     <title>KAYYREPS | MULEBUY</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Obniżony gradient - góra zostaje biała dłużej */
         body {
-            background: linear-gradient(180deg, #ffffff 0%, #ffffff 40%, #1a1a1a 70%, #000000 100%);
+            background: linear-gradient(180deg, #ffffff 0%, #ffffff 50%, #1a1a1a 80%, #000000 100%);
             background-attachment: fixed;
             color: #ffffff;
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
         }
 
-        /* Sekcja nagłówka i wyszukiwarki wymusza czarny tekst na białym tle */
-        header, .nav-section {
-            color: #000000;
-        }
+        header, .nav-section { color: #000000; }
 
         .product-card {
             background: #000000;
             border: 1px solid #222222;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
-        .product-card:hover {
-            border-color: #ffffff;
-            transform: translateY(-2px);
-        }
+        .product-card:hover { border-color: #ffffff; }
 
-        /* Ultra bold kategorie */
         .category-btn {
             border: 2px solid #000000;
             color: #000000;
@@ -39,8 +31,6 @@
             font-size: 14px;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            transition: all 0.2s;
             background: transparent;
         }
 
@@ -49,25 +39,23 @@
             color: #ffffff;
         }
 
-        /* Wyszukiwarka - gruba linia */
+        /* Wyszukiwarka - czarny tekst i linia */
         .search-input {
             background: transparent;
             border: none;
-            border-bottom: 4px solid #000000;
-            color: #000000;
+            border-bottom: 5px solid #000000;
+            color: #000000; /* Czarny tekst */
             font-weight: 900;
             text-transform: uppercase;
         }
 
-        .search-input:focus {
-            outline: none;
-        }
+        .search-input:focus { outline: none; }
+        .search-input::placeholder { color: #555555; font-weight: 800; }
 
-        .search-input::placeholder {
-            color: #aaaaaa;
-            font-weight: 400;
-            text-transform: none;
-        }
+        /* Styl detali produktu */
+        .info-label { font-size: 10px; color: #888888; font-weight: 900; text-transform: uppercase; }
+        .info-value { font-size: 14px; color: #ffffff; font-weight: 700; }
+        .highlight-box { border: 1px solid #444444; padding: 8px; background: #111111; }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -81,8 +69,8 @@
 
     <div class="max-w-5xl mx-auto mb-32 nav-section">
         <div class="relative mb-12">
-            <input type="text" id="searchInput" placeholder="SZUKAJ..." 
-                   class="search-input w-full p-4 text-2xl md:text-5xl focus:outline-none transition">
+            <input type="text" id="searchInput" placeholder="WPISZ CZEGO SZUKASZ..." 
+                   class="search-input w-full p-4 text-3xl md:text-6xl focus:outline-none transition">
         </div>
         
         <div class="flex flex-wrap gap-4 justify-center">
@@ -95,7 +83,7 @@
     </div>
 
     <main class="max-w-7xl mx-auto">
-        <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-10">
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             </div>
     </main>
 
@@ -104,20 +92,25 @@
     </footer>
 
     <script>
+        // Baza produktów z Opisem, Wagą i Kosztem
         const products = [
             { 
-                name: "Jordan 4 Black Cat", 
+                name: "Jordan 4 Black Cat (GX Batch)", 
                 category: "Shoes", 
-                price: "¥250", 
-                img: "https://via.placeholder.com/400x400?text=QC+PHOTO", 
+                price: "¥460", 
+                weight: "1450g",
+                description: "Najlepszy batch pod względem materiałów. Podeszwa nie pęka, zamsz żyje.",
+                img: "https://via.placeholder.com/400x400?text=Jordan+4+Black+Cat", 
                 link: "#", 
                 bestseller: true 
             },
             { 
-                name: "Essentials Hoodie", 
+                name: "Essentials Hoodie Black", 
                 category: "Clothing", 
-                price: "¥160", 
-                img: "https://via.placeholder.com/400x400?text=QC+PHOTO", 
+                price: "¥128", 
+                weight: "850g",
+                description: "Gruby materiał, oversize fit. Metki 1:1.",
+                img: "https://via.placeholder.com/400x400?text=Essentials+Hoodie", 
                 link: "#", 
                 bestseller: false 
             }
@@ -126,19 +119,33 @@
         function displayProducts(items) {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = items.map(p => `
-                <div class="product-card p-4 flex flex-col h-full shadow-2xl">
-                    <div class="aspect-square w-full overflow-hidden bg-white/5 mb-6">
+                <div class="product-card flex flex-col h-full shadow-2xl overflow-hidden">
+                    <div class="aspect-square w-full overflow-hidden bg-white/5 border-b border-white/10">
                         <img src="${p.img}" class="w-full h-full object-cover">
                     </div>
-                    <div class="flex-grow">
+                    
+                    <div class="p-6 flex flex-col flex-grow">
                         <p class="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-2">${p.category}</p>
-                        <h3 class="font-black text-base uppercase leading-none mb-6 italic">${p.name}</h3>
-                    </div>
-                    <div class="mt-auto">
-                        <p class="text-2xl font-black mb-6 tracking-tighter">${p.price}</p>
-                        <a href="${p.link}" target="_blank" class="block w-full text-center bg-white text-black py-4 text-[11px] font-black uppercase tracking-[0.2em] hover:invert transition duration-300">
-                            Get Link
-                        </a>
+                        <h3 class="font-black text-xl uppercase italic leading-none mb-4">${p.name}</h3>
+                        
+                        <p class="text-xs text-gray-400 mb-6 leading-relaxed">${p.description}</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="highlight-box">
+                                <span class="info-label">Waga:</span>
+                                <p class="info-value text-white">${p.weight}</p>
+                            </div>
+                            <div class="highlight-box border-white/40">
+                                <span class="info-label text-white/60">Koszt:</span>
+                                <p class="info-value text-white">${p.price}</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto">
+                            <a href="${p.link}" target="_blank" class="block w-full text-center bg-white text-black py-4 text-xs font-black uppercase tracking-[0.2em] hover:bg-gray-300 transition duration-300 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)]">
+                                Otwórz w Mulebuy
+                            </a>
+                        </div>
                     </div>
                 </div>
             `).join('');
