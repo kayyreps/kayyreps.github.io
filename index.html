@@ -38,7 +38,7 @@
     <header class="flex flex-col items-center py-12 mb-6 text-center">
         <img src="https://i.imgur.com/1dA1uNB.png" alt="KAYYREPS" class="h-24 md:h-32 mb-8">
         <div class="inline-block border-[6px] border-black px-10 py-4">
-            <h1 id="mainTitle" class="text-3xl md:text-5xl font-black uppercase tracking-tighter italic text-black">Mulebuy Sheet</h1>
+            <h1 class="text-3xl md:text-5xl font-black uppercase tracking-tighter italic text-black">Mulebuy Sheet</h1>
         </div>
     </header>
 
@@ -66,36 +66,12 @@
 
     <script>
         const translations = {
-            pl: {
-                search: "WPISZ CZEGO SZUKASZ...",
-                all: "Wszystko",
-                shoes: "Buty",
-                clothing: "Ubrania",
-                acc: "Akcesoria",
-                weight: "Waga",
-                cost: "Koszt"
-            },
-            en: {
-                search: "TYPE WHAT YOU NEED...",
-                all: "All Items",
-                shoes: "Shoes",
-                clothing: "Clothing",
-                acc: "Accessories",
-                weight: "Weight",
-                cost: "Cost"
-            },
-            de: {
-                search: "SUCHE STARTEN...",
-                all: "Alle",
-                shoes: "Schuhe",
-                clothing: "Kleidung",
-                acc: "Zubehör",
-                weight: "Gewicht",
-                cost: "Preis"
-            }
+            pl: { search: "WPISZ CZEGO SZUKASZ...", all: "Wszystko", shoes: "Buty", clothing: "Ubrania", acc: "Akcesoria", weight: "Waga", cost: "Koszt" },
+            en: { search: "TYPE WHAT YOU NEED...", all: "All Items", shoes: "Shoes", clothing: "Clothing", acc: "Accessories", weight: "Weight", cost: "Cost" },
+            de: { search: "SUCHE STARTEN...", all: "Alle", shoes: "Schuhe", clothing: "Kleidung", acc: "Zubehör", weight: "Gewicht", cost: "Preis" }
         };
 
-        // Twoje produkty
+        // WYCZYŚCZONE LINKI (BEZ PARAMETRÓW ERRORÓW)
         const products = [
             { name: "LV Skate", category: "Shoes", price: "¥210", weight: "1500g", img: "https://via.placeholder.com/400x400?text=LV+Skate", link: "https://mulebuy.com/product?id=7486090883&ref=200006620" },
             { name: "Dior B30", category: "Shoes", price: "¥140", weight: "1200g", img: "https://via.placeholder.com/400x400?text=Dior+B30", link: "https://mulebuy.com/product?id=7621035580&ref=200006620" },
@@ -162,14 +138,11 @@
             const buttons = document.querySelectorAll('.category-btn');
             buttons.forEach(b => b.classList.remove('active'));
             if(event) event.currentTarget.classList.add('active');
-
             if(cat === 'All') return displayProducts(products);
             displayProducts(products.filter(p => p.category === cat));
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            displayProducts(products);
-        });
+        document.addEventListener('DOMContentLoaded', () => { displayProducts(products); });
     </script>
 </body>
 </html>
