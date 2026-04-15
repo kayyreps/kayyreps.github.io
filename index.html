@@ -6,16 +6,20 @@
     <title>KAYYREPS | MULEBUY</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Płynny gradient od bieli do czerni */
+        /* Obniżony gradient - góra zostaje biała dłużej */
         body {
-            background: linear-gradient(180deg, #ffffff 0%, #1a1a1a 40%, #000000 100%);
+            background: linear-gradient(180deg, #ffffff 0%, #ffffff 40%, #1a1a1a 70%, #000000 100%);
             background-attachment: fixed;
             color: #ffffff;
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
         }
 
-        /* Karty produktów - czysty minimal */
+        /* Sekcja nagłówka i wyszukiwarki wymusza czarny tekst na białym tle */
+        header, .nav-section {
+            color: #000000;
+        }
+
         .product-card {
             background: #000000;
             border: 1px solid #222222;
@@ -27,42 +31,29 @@
             transform: translateY(-2px);
         }
 
-        /* Pogrubione kategorie bez kolorów */
+        /* Ultra bold kategorie */
         .category-btn {
             border: 2px solid #000000;
             color: #000000;
             padding: 10px 24px;
             font-size: 14px;
-            font-weight: 900; /* Ultra bold */
+            font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             transition: all 0.2s;
             background: transparent;
         }
 
-        /* Stan aktywny przycisku na ciemnym tle */
-        .dark-btn {
-            border: 2px solid #ffffff;
-            color: #ffffff;
-        }
-
         .category-btn:hover, .category-btn.active {
             background: #000000;
             color: #ffffff;
-            border-color: #000000;
         }
 
-        .dark-btn:hover, .dark-btn.active {
-            background: #ffffff;
-            color: #000000;
-            border-color: #ffffff;
-        }
-
-        /* Input wyszukiwarki */
+        /* Wyszukiwarka - gruba linia */
         .search-input {
             background: transparent;
             border: none;
-            border-bottom: 3px solid #000000;
+            border-bottom: 4px solid #000000;
             color: #000000;
             font-weight: 900;
             text-transform: uppercase;
@@ -70,11 +61,10 @@
 
         .search-input:focus {
             outline: none;
-            border-color: #444444;
         }
 
         .search-input::placeholder {
-            color: #888888;
+            color: #aaaaaa;
             font-weight: 400;
             text-transform: none;
         }
@@ -82,17 +72,17 @@
 </head>
 <body class="p-4 md:p-8">
 
-    <header class="flex flex-col items-center py-12 mb-10">
-        <img src="https://i.imgur.com/1dA1uNB.png" alt="KAYYREPS" class="h-20 md:h-28 mb-8">
-        <div class="inline-block border-4 border-black px-8 py-3">
-            <h1 class="text-2xl md:text-4xl font-black uppercase tracking-tighter text-black">Mulebuy Spreadsheet</h1>
+    <header class="flex flex-col items-center py-12 mb-6">
+        <img src="https://i.imgur.com/1dA1uNB.png" alt="KAYYREPS" class="h-24 md:h-32 mb-8">
+        <div class="inline-block border-[6px] border-black px-10 py-4">
+            <h1 class="text-3xl md:text-5xl font-black uppercase tracking-tighter italic">Mulebuy Sheet</h1>
         </div>
     </header>
 
-    <div class="max-w-5xl mx-auto mb-16">
+    <div class="max-w-5xl mx-auto mb-32 nav-section">
         <div class="relative mb-12">
-            <input type="text" id="searchInput" placeholder="SZUKAJ PRODUKTU..." 
-                   class="search-input w-full p-4 text-xl md:text-3xl focus:outline-none transition">
+            <input type="text" id="searchInput" placeholder="SZUKAJ..." 
+                   class="search-input w-full p-4 text-2xl md:text-5xl focus:outline-none transition">
         </div>
         
         <div class="flex flex-wrap gap-4 justify-center">
@@ -100,17 +90,17 @@
             <button onclick="filterCategory('Shoes')" class="category-btn">Buty</button>
             <button onclick="filterCategory('Clothing')" class="category-btn">Ubrania</button>
             <button onclick="filterCategory('Accessories')" class="category-btn">Akcesoria</button>
-            <button onclick="filterCategory('Bestseller')" class="category-btn !border-black bg-black text-white">Bestsellery</button>
+            <button onclick="filterCategory('Bestseller')" class="category-btn !bg-black !text-white">Bestsellery</button>
         </div>
     </div>
 
     <main class="max-w-7xl mx-auto">
-        <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-8">
+        <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-10">
             </div>
     </main>
 
-    <footer class="text-center mt-32 py-12 border-t border-white/10">
-        <p class="text-[10px] font-black tracking-[0.3em] text-white/30 uppercase">Kayyreps &copy; 2026</p>
+    <footer class="text-center mt-40 py-12">
+        <p class="text-[10px] font-black tracking-[0.4em] text-white/20 uppercase">Kayyreps &copy; 2026</p>
     </footer>
 
     <script>
@@ -124,9 +114,9 @@
                 bestseller: true 
             },
             { 
-                name: "Nike Dunk Low Panda", 
-                category: "Shoes", 
-                price: "¥190", 
+                name: "Essentials Hoodie", 
+                category: "Clothing", 
+                price: "¥160", 
                 img: "https://via.placeholder.com/400x400?text=QC+PHOTO", 
                 link: "#", 
                 bestseller: false 
@@ -136,18 +126,18 @@
         function displayProducts(items) {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = items.map(p => `
-                <div class="product-card p-4 flex flex-col h-full">
-                    <div class="aspect-square w-full overflow-hidden bg-white/5 mb-4">
-                        <img src="${p.img}" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500">
+                <div class="product-card p-4 flex flex-col h-full shadow-2xl">
+                    <div class="aspect-square w-full overflow-hidden bg-white/5 mb-6">
+                        <img src="${p.img}" class="w-full h-full object-cover">
                     </div>
                     <div class="flex-grow">
-                        <p class="text-[10px] font-black text-white/40 uppercase tracking-widest mb-1">${p.category}</p>
-                        <h3 class="font-black text-sm uppercase leading-tight mb-4">${p.name}</h3>
+                        <p class="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-2">${p.category}</p>
+                        <h3 class="font-black text-base uppercase leading-none mb-6 italic">${p.name}</h3>
                     </div>
                     <div class="mt-auto">
-                        <p class="text-xl font-black mb-4">${p.price}</p>
-                        <a href="${p.link}" target="_blank" class="block w-full text-center bg-white text-black py-3 text-xs font-black uppercase tracking-widest hover:bg-gray-200 transition">
-                            Mulebuy Link
+                        <p class="text-2xl font-black mb-6 tracking-tighter">${p.price}</p>
+                        <a href="${p.link}" target="_blank" class="block w-full text-center bg-white text-black py-4 text-[11px] font-black uppercase tracking-[0.2em] hover:invert transition duration-300">
+                            Get Link
                         </a>
                     </div>
                 </div>
