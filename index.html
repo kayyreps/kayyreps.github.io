@@ -1,17 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
-    <title>KAYYREPS x MULEBUY</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAYYREPS | Mulebuy Spreadsheet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: sans-serif; text-align: center; background: #121212; color: white; padding: 50px; }
-        .btn { background: #ff4500; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        body { background-color: #0f172a; color: white; }
+        .product-card { background: #1e293b; border: 1px solid #334155; transition: 0.3s; }
+        .product-card:hover { transform: translateY(-5px); border-color: #fbbf24; }
     </style>
 </head>
-<body>
-    <h1>KAYYREPS MULEBUY SPREADSHEET</h1>
-    <p>Najlepsze znaleziska i reps w jednym miejscu!</p>
-    <br><br>
-    <a href="LINK_DO_TWOJEGO_ARKUSZA_GOOGLE" class="btn">OTWÓRZ ARKUSZ</a>
+<body class="p-5">
+
+    <header class="text-center mb-10">
+        <h1 class="text-4xl font-bold text-yellow-400">KAYYREPS MULEBUY</h1>
+        <p class="text-slate-400 mt-2">Najlepsze znaleziska i QC w jednym miejscu</p>
+    </header>
+
+    <div class="max-w-4xl mx-auto mb-10 space-y-4">
+        <input type="text" id="searchInput" placeholder="Szukaj butów, ubrań..." 
+               class="w-full p-4 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:border-yellow-400">
+        
+        <div class="flex flex-wrap gap-2 justify-center">
+            <button onclick="filterCategory('All')" class="px-4 py-2 bg-slate-700 rounded-full hover:bg-yellow-400 hover:text-black transition">Wszystko</button>
+            <button onclick="filterCategory('Shoes')" class="px-4 py-2 bg-slate-700 rounded-full hover:bg-yellow-400 hover:text-black">Buty</button>
+            <button onclick="filterCategory('Clothing')" class="px-4 py-2 bg-slate-700 rounded-full hover:bg-yellow-400 hover:text-black">Ubrania</button>
+            <button onclick="filterCategory('Bestseller')" class="px-4 py-2 bg-yellow-600 rounded-full text-white">🔥 Bestsellery</button>
+        </div>
+    </div>
+
+    <div id="productGrid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        </div>
+
+    <script>
+        // TUTAJ TWOJA BAZA PRODUKTÓW
+        const products = [
+            { name: "Jordan 4 Black Cat", category: "Shoes", price: "$65", img: "URL_ZDJECIA", link: "TWÓJ_REF_MULEBUY", bestseller: true },
+            { name: "Trapstar Tracksuit", category: "Clothing", price: "$40", img: "URL_ZDJECIA", link: "TWÓJ_REF_MULEBUY", bestseller: false },
+            { name: "Yeezy Slide", category: "Shoes", price: "$15", img: "URL_ZDJECIA", link: "TWÓJ_REF_MULEBUY", bestseller: true },
+        ];
+
+        function displayProducts(items) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = items.map(p => `
+                <div class="product-card p-4 rounded-xl flex flex-col">
+                    <img src="${p.img}" class="w-full h-48 object-cover rounded-lg mb-4" onerror="this.src='https://via.placeholder.com/200'">
+                    <h3 class="font-bold text-lg">${p.name}</h3>
+                    <p class="text-yellow-400 font-semibold mb-4">${p.price}</p>
+                    <a href="${p.link}" target="_blank" class="mt-auto block text-center bg-yellow-500 text-black py-2 rounded-lg font-bold hover:bg-yellow-400">KUP PRZEZ MULEBUY</a>
+                </div>
+            `).join('');
+        }
+
+        // Proste filtrowanie
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(term));
+            displayProducts(filtered);
+        });
+
+        function filterCategory(cat) {
+            if(cat === 'All') return displayProducts(products);
+            if(cat === 'Bestseller') return displayProducts(products.filter(p => p.bestseller));
+            displayProducts(products.filter(p => p.category === cat));
+        }
+
+        displayProducts(products); // Start strony
+    </script>
 </body>
 </html>
