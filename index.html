@@ -45,7 +45,7 @@
     <div class="max-w-5xl mx-auto mb-32 nav-section">
         <div class="relative mb-12">
             <input type="text" id="searchInput" placeholder="WPISZ CZEGO SZUKASZ..." 
-                   class="search-input w-full p-4 text-3xl md:text-6xl focus:outline-none transition">
+                   class="search-input w-full p-4 text-3xl md:text-6xl focus:outline-none transition text-black">
         </div>
         
         <div class="flex flex-wrap gap-4 justify-center">
@@ -53,7 +53,6 @@
             <button onclick="filterCategory('Shoes')" id="btnShoes" class="category-btn">Buty</button>
             <button onclick="filterCategory('Clothing')" id="btnClothing" class="category-btn">Ubrania</button>
             <button onclick="filterCategory('Accessories')" id="btnAcc" class="category-btn">Akcesoria</button>
-            <button onclick="filterCategory('Bestseller')" id="btnBest" class="category-btn !bg-black !text-white italic">Bestsellery</button>
         </div>
     </div>
 
@@ -73,7 +72,6 @@
                 shoes: "Buty",
                 clothing: "Ubrania",
                 acc: "Akcesoria",
-                best: "Bestsellery",
                 weight: "Waga",
                 cost: "Koszt"
             },
@@ -83,7 +81,6 @@
                 shoes: "Shoes",
                 clothing: "Clothing",
                 acc: "Accessories",
-                best: "Bestsellers",
                 weight: "Weight",
                 cost: "Cost"
             },
@@ -93,23 +90,19 @@
                 shoes: "Schuhe",
                 clothing: "Kleidung",
                 acc: "Zubehör",
-                best: "Bestseller",
                 weight: "Gewicht",
                 cost: "Preis"
             }
         };
 
         const products = [
-            { name: "Jordan 4 Black Cat", category: "Shoes", price: "¥460", weight: "1450g", img: "https://via.placeholder.com/400x400?text=J4+Black+Cat", link: "#", bestseller: true },
-            { name: "Essentials Hoodie", category: "Clothing", price: "¥128", weight: "850g", img: "https://via.placeholder.com/400x400?text=Essentials", link: "#", bestseller: false },
-            { name: "Yeezy Slide", category: "Shoes", price: "¥110", weight: "600g", img: "https://via.placeholder.com/400x400?text=Yeezy", link: "#", bestseller: true },
-            { name: "LV Belt", category: "Accessories", price: "¥210", weight: "400g", img: "https://via.placeholder.com/400x400?text=LV+Belt", link: "#", bestseller: false },
-            { name: "Nike Tech", category: "Clothing", price: "¥240", weight: "1100g", img: "https://via.placeholder.com/400x400?text=Nike+Tech", link: "#", bestseller: true },
-            { name: "Dunk Panda", category: "Shoes", price: "¥190", weight: "1200g", img: "https://via.placeholder.com/400x400?text=Panda", link: "#", bestseller: false },
-            { name: "Trapstar Set", category: "Clothing", price: "¥320", weight: "1300g", img: "https://via.placeholder.com/400x400?text=Trapstar", link: "#", bestseller: true },
-            { name: "Bapesta White", category: "Shoes", price: "¥380", weight: "1400g", img: "https://via.placeholder.com/400x400?text=Bapesta", link: "#", bestseller: false },
-            { name: "Arc'teryx", category: "Clothing", price: "¥450", weight: "700g", img: "https://via.placeholder.com/400x400?text=Arcteryx", link: "#", bestseller: true },
-            { name: "Goyard Card", category: "Accessories", price: "¥35", weight: "50g", img: "https://via.placeholder.com/400x400?text=Goyard", link: "#", bestseller: false }
+            { name: "LV Skate", category: "Shoes", price: "¥210", weight: "1500g", img: "https://via.placeholder.com/400x400?text=LV+Skate", link: "https://mulebuy.com/product?id=7486090883&ref=200006620" },
+            { name: "Dior B30", category: "Shoes", price: "¥140", weight: "1200g", img: "https://via.placeholder.com/400x400?text=Dior+B30", link: "https://mulebuy.com/product?id=7621035580&ref=200006620" },
+            { name: "Nike Socks", category: "Accessories", price: "¥8.50", weight: "50g", img: "https://via.placeholder.com/400x400?text=Nike+Socks", link: "https://mulebuy.com/product?id=898825668921&ref=200006620" },
+            { name: "Random Football Jersey", category: "Clothing", price: "¥20", weight: "250g", img: "https://via.placeholder.com/400x400?text=Jersey", link: "https://mulebuy.com/product?id=677682266343&ref=200006620" },
+            { name: "Neymar Santos Jersey", category: "Clothing", price: "¥36", weight: "250g", img: "https://via.placeholder.com/400x400?text=Neymar+Santos", link: "https://mulebuy.com/product?id=845428157928&ref=200006620" },
+            { name: "Air Force 1", category: "Shoes", price: "¥50", weight: "1100g", img: "https://via.placeholder.com/400x400?text=Air+Force+1", link: "https://mulebuy.com/product?id=762646462933&ref=200006620" },
+            { name: "AirPods Pro 2", category: "Accessories", price: "¥75", weight: "200g", img: "https://via.placeholder.com/400x400?text=AirPods", link: "https://mulebuy.com/product?id=7221579639&ref=200006620" }
         ];
 
         let currentLang = 'pl';
@@ -117,22 +110,17 @@
         function changeLanguage() {
             currentLang = document.getElementById('langSelector').value;
             const t = translations[currentLang];
-            
-            // Podmiana tekstów
             document.getElementById('searchInput').placeholder = t.search;
             document.getElementById('btnAll').innerText = t.all;
             document.getElementById('btnShoes').innerText = t.shoes;
             document.getElementById('btnClothing').innerText = t.clothing;
             document.getElementById('btnAcc').innerText = t.acc;
-            document.getElementById('btnBest').innerText = t.best;
-
-            displayProducts(products); // Odśwież produkty z nowymi etykietami
+            displayProducts(products);
         }
 
         function displayProducts(items) {
             const grid = document.getElementById('productGrid');
             const t = translations[currentLang];
-            
             grid.innerHTML = items.map(p => `
                 <div class="product-card flex flex-col h-full shadow-xl">
                     <div class="aspect-square w-full overflow-hidden bg-white/5 border-b border-white/10">
@@ -172,10 +160,12 @@
             if(event) event.currentTarget.classList.add('active');
 
             if(cat === 'All') return displayProducts(products);
-            displayProducts(products.filter(p => p.category === cat || (cat === 'Bestseller' && p.bestseller)));
+            displayProducts(products.filter(p => p.category === cat));
         }
 
-        displayProducts(products);
+        document.addEventListener('DOMContentLoaded', () => {
+            displayProducts(products);
+        });
     </script>
 </body>
 </html>
