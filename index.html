@@ -3,46 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KAYYREPS</title>
+    <title>KAYYREPS | MULEBUY</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-white text-black">
+    <style>
+        /* Płynne przejście koloru tła (Gradient) */
+        body {
+            background: linear-gradient(180deg, #ffffff 0%, #333333 50%, #000000 100%);
+            background-attachment: fixed; /* Tło stoi w miejscu przy skrolowaniu */
+            color: #ffffff; /* Domyślny kolor tekstu na ciemnym tle */
+            font-family: sans-serif;
+            min-height: 100vh;
+        }
 
-    <header class="flex flex-col items-center py-12 border-b border-black">
-        <img src="https://i.imgur.com/1dA1uNB.png" alt="Logo" class="h-20 mb-4">
-        <h1 class="text-3xl font-black uppercase tracking-tighter">Mulebuy Sheet</h1>
+        /* Karty produktów: delikatny szary na dole */
+        .product-card {
+            background: #1a1a1a; /* Bardzo ciemny szary */
+            border: 1px solid #333333;
+            transition: all 0.3s ease-in-out;
+            color: #ffffff;
+        }
+
+        /* Efekt po najechaniu na kartę: biała obwódka i cień */
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: #ffffff;
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Przyciski: Biało-czarny minimalistyczny styl */
+        .btn-white {
+            background-color: #ffffff;
+            color: #000000;
+            transition: background-color 0.2s;
+        }
+        .btn-white:hover {
+            background-color: #cccccc; /* Ciemniejszy szary przy najechaniu */
+        }
+
+        /* Kategorie: Białe obwódki */
+        .category-btn {
+            border: 1px solid #ffffff;
+            color: #ffffff;
+            padding: 8px 18px;
+            border-radius: 99px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s;
+        }
+        .category-btn:hover, .category-btn.active {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        /* Wyszukiwarka: Biała linia na dole */
+        .search-input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #ffffff;
+            color: #ffffff;
+            font-weight: font-black;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: font-normal;
+            text-transform: none;
+            letter-spacing: normal;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #ffffff;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <header class="flex flex-col items-center py-10 md:py-16 mb-10 border-b-2 border-white/10">
+        <img src="https://i.imgur.com/1dA1uNB.png" alt="KAYYREPS Logo" class="h-24 md:h-32 mb-6 grayscale-0">
+        <h1 class="text-3xl md:text-5xl font-black uppercase tracking-tighter text-black bg-white px-6 py-2 rounded-full shadow-lg">Mulebuy Sheet</h1>
+        <p class="text-sm md:text-base mt-4 text-black/70 font-bold">Najlepsze Znaleziska & QC w jednym miejscu</p>
     </header>
 
-    <div class="max-w-4xl mx-auto p-6">
-        <input type="text" id="search" placeholder="SZUKAJ..." class="w-full p-4 border-2 border-black font-bold uppercase mb-8 focus:outline-none">
+    <div class="max-w-6xl mx-auto mb-16 space-y-8">
+        <div class="relative max-w-2xl mx-auto">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-white/50">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+            </span>
+            <input type="text" id="searchInput" placeholder="Szukaj produktu (np. Jordan 4)..." 
+                   class="search-input w-full p-6 pl-16 rounded-xl text-lg font-black tracking-widest uppercase focus:outline-none focus:border-white transition">
+        </div>
         
-        <div id="grid" class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            </div>
+        <div class="flex flex-wrap gap-3 justify-center">
+            <button onclick="filterCategory('All')" class="category-btn active">Wszystko</button>
+            <button onclick="filterCategory('Shoes')" class="category-btn">👟 Buty</button>
+            <button onclick="filterCategory('Clothing')" class="category-btn">👕 Ubrania</button>
+            <button onclick="filterCategory('Accessories')" class="category-btn">🧢 Akcesoria</button>
+            <button onclick="filterCategory('Bestseller')" class="category-btn font-black border-4 !border-white !bg-transparent text-white active">🔥 HOT</button>
+        </div>
     </div>
 
+    <main class="max-w-7xl mx-auto">
+        <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+            </div>
+        
+        <div id="noResults" class="hidden text-center py-24 text-white/50 border-t-2 border-white/10">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-20 h-20 mx-auto mb-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <p class="text-xl font-bold">Brak wyników wyszukiwania.</p>
+        </div>
+    </main>
+
+    <footer class="text-center mt-24 py-10 border-t-2 border-white/10 text-white/40 text-sm">
+        <p>&copy; 2024 KAYYREPS. All rights reserved.</p>
+        <p class="mt-1 font-bold">Ten arkusz nie jest oficjalnym sklepem. Kupujesz na własne ryzyko.</p>
+    </footer>
+
     <script>
+        // --- TWOJA BAZA DANYCH PRODUKTÓW ---
+        // Pamiętaj o przecinku po każdym obiekcie { ... },
         const products = [
-            { name: "Jordan 4", price: "¥250", link: "#", img: "https://via.placeholder.com/400" },
-            { name: "Dunk Low", price: "¥190", link: "#", img: "https://via.placeholder.com/400" }
+            { 
+                name: "Przykładowe Jordan 4 Black Cat", 
+                category: "Shoes", 
+                price: "¥250", 
+                // Użyłem uniwersalnego zdjęcia poglądowego dla J4 Black Cat
+                img: "https://i.imgur.com/k6lP09F.png", 
+                link: "TWÓJ_LINK_AFILIACYJNY_MULEBUY", 
+                bestseller: true 
+            },
+            { 
+                name: "Przykładowa Bluza Trapstar Blue", 
+                category: "Clothing", 
+                price: "¥180", 
+                // Użyłem uniwersalnego zdjęcia poglądowego dla bluzy
+                img: "https://via.placeholder.com/400x400.png?text=Trapstar+Bluza", 
+                link: "TWÓJ_LINK_AFILIACYJNY_MULEBUY", 
+                bestseller: false 
+            }
         ];
 
-        function show(list) {
-            document.getElementById('grid').innerHTML = list.map(p => `
-                <div class="border border-black p-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                    <img src="${p.img}" class="w-full aspect-square object-cover mb-2 border-b border-black">
-                    <p class="font-black text-sm uppercase">${p.name}</p>
-                    <p class="text-lg font-bold mb-3">${p.price}</p>
-                    <a href="${p.link}" target="_blank" class="block w-full text-center bg-black text-white py-2 text-xs font-bold uppercase">Link</a>
+        const grid = document.getElementById('productGrid');
+        const noResults = document.getElementById('noResults');
+        const searchInput = document.getElementById('searchInput');
+
+        // Funkcja wyświetlająca produkty
+        function displayProducts(items) {
+            if (items.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+            
+            noResults.classList.add('hidden');
+            grid.innerHTML = items.map(p => `
+                <div class="product-card p-4 rounded-3xl flex flex-col h-full relative">
+                    <div class="aspect-square w-full overflow-hidden rounded-2xl mb-4 relative bg-black/30 border border-white/10">
+                        <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover">
+                        ${p.bestseller ? '<span class="absolute top-3 right-3 bg-white text-black text-[10px] font-black px-3 py-1.5 rounded-full shadow-lg uppercase tracking-wider">🔥 HOT</span>' : ''}
+                    </div>
+                    
+                    <div class="flex-grow mb-5">
+                        <span class="text-[11px] text-white/50 uppercase tracking-wider font-bold">${translateCategory(p.category)}</span>
+                        <h3 class="font-black text-sm md:text-base text-white line-clamp-2 mt-1 uppercase leading-tight" title="${p.name}">${p.name}</h3>
+                    </div>
+                    
+                    <div class="mt-auto pt-4 border-t border-white/10">
+                        <div class="flex items-center justify-between gap-2 mb-4">
+                            <span class="text-xs text-white/40 font-medium">Cena:</span>
+                            <span class="text-xl md:text-2xl font-black text-white">${p.price}</span>
+                        </div>
+                        <a href="${p.link}" target="_blank" rel="noopener noreferrer" class="block text-center btn-white py-3.5 rounded-xl font-black transition text-sm active:scale-95 shadow-lg uppercase tracking-widest">
+                            MULEBUY LINK
+                        </a>
+                    </div>
                 </div>
             `).join('');
         }
 
-        document.getElementById('search').addEventListener('input', (e) => {
-            const val = e.target.value.toLowerCase();
-            show(products.filter(p => p.name.toLowerCase().includes(val)));
+        // Tłumaczenie kategorii dla wyświetlania
+        function translateCategory(cat) {
+            const cats = { 'Shoes': 'Buty', 'Clothing': 'Ubrania', 'Accessories': 'Akcesoria' };
+            return cats[cat] || cat;
+        }
+
+        // Obsługa wyszukiwarki
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase().trim();
+            const filtered = products.filter(p => 
+                p.name.toLowerCase().includes(term) || 
+                translateCategory(p.category).toLowerCase().includes(term)
+            );
+            displayProducts(filtered);
         });
 
-        show(products);
+        // Obsługa filtrowania kategoriami
+        function filterCategory(cat) {
+            // Czyszczenie wyszukiwarki przy zmianie kategorii
+            searchInput.value = '';
+            
+            // Oznaczanie przycisku jako aktywnego
+            const btns = document.querySelectorAll('.category-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+            // Znajdź kliknięty przycisk i oznacz
+            event.currentTarget.classList.add('active');
+            
+            if(cat === 'All') return displayProducts(products);
+            if(cat === 'Bestseller') return displayProducts(products.filter(p => p.bestseller));
+            displayProducts(products.filter(p => p.category === cat));
+        }
+
+        // Start strony
+        displayProducts(products);
     </script>
 </body>
 </html>
