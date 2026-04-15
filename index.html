@@ -38,14 +38,14 @@
     <header class="flex flex-col items-center py-12 mb-6 text-center">
         <img src="https://i.imgur.com/1dA1uNB.png" alt="KAYYREPS" class="h-24 md:h-32 mb-8">
         <div class="inline-block border-[6px] border-black px-10 py-4">
-            <h1 id="mainTitle" class="text-3xl md:text-5xl font-black uppercase tracking-tighter italic">Mulebuy Sheet</h1>
+            <h1 id="mainTitle" class="text-3xl md:text-5xl font-black uppercase tracking-tighter italic text-black">Mulebuy Sheet</h1>
         </div>
     </header>
 
     <div class="max-w-5xl mx-auto mb-32 nav-section">
         <div class="relative mb-12">
             <input type="text" id="searchInput" placeholder="WPISZ CZEGO SZUKASZ..." 
-                   class="search-input w-full p-4 text-3xl md:text-6xl focus:outline-none transition text-black">
+                   class="search-input w-full p-4 text-3xl md:text-6xl focus:outline-none transition">
         </div>
         
         <div class="flex flex-wrap gap-4 justify-center">
@@ -95,6 +95,7 @@
             }
         };
 
+        // Twoje produkty
         const products = [
             { name: "LV Skate", category: "Shoes", price: "¥210", weight: "1500g", img: "https://via.placeholder.com/400x400?text=LV+Skate", link: "https://mulebuy.com/product?id=7486090883&ref=200006620" },
             { name: "Dior B30", category: "Shoes", price: "¥140", weight: "1200g", img: "https://via.placeholder.com/400x400?text=Dior+B30", link: "https://mulebuy.com/product?id=7621035580&ref=200006620" },
@@ -139,9 +140,12 @@
                                 <p class="text-[11px] font-black text-white">${p.price}</p>
                             </div>
                         </div>
-                        <div class="mt-auto">
+                        <div class="mt-auto space-y-2">
                             <a href="${p.link}" target="_blank" class="block w-full text-center bg-white text-black py-2.5 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-gray-200 transition">
                                 LINK
+                            </a>
+                            <a href="${p.link}" target="_blank" class="block text-[7px] text-white/30 hover:text-white truncate transition text-center font-mono">
+                                ${p.link}
                             </a>
                         </div>
                     </div>
