@@ -13,49 +13,17 @@
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
         }
-
         header, .nav-section { color: #000000; }
-
-        .product-card {
-            background: #000000;
-            border: 1px solid #222222;
-            transition: all 0.3s ease;
-        }
-
-        .product-card:hover { border-color: #ffffff; }
-
-        .category-btn {
-            border: 2px solid #000000;
-            color: #000000;
-            padding: 10px 24px;
-            font-size: 14px;
-            font-weight: 900;
-            text-transform: uppercase;
-            background: transparent;
-        }
-
-        .category-btn:hover, .category-btn.active {
-            background: #000000;
-            color: #ffffff;
-        }
-
-        /* Wyszukiwarka - czarny tekst i linia */
-        .search-input {
-            background: transparent;
-            border: none;
-            border-bottom: 5px solid #000000;
-            color: #000000; /* Czarny tekst */
-            font-weight: 900;
-            text-transform: uppercase;
-        }
-
+        .product-card { background: #000000; border: 1px solid #222222; transition: all 0.3s ease; }
+        .product-card:hover { border-color: #ffffff; transform: translateY(-3px); }
+        .category-btn { border: 2px solid #000000; color: #000000; padding: 10px 24px; font-size: 14px; font-weight: 900; text-transform: uppercase; background: transparent; }
+        .category-btn:hover, .category-btn.active { background: #000000; color: #ffffff; }
+        .search-input { background: transparent; border: none; border-bottom: 5px solid #000000; color: #000000; font-weight: 900; text-transform: uppercase; }
         .search-input:focus { outline: none; }
         .search-input::placeholder { color: #555555; font-weight: 800; }
-
-        /* Styl detali produktu */
-        .info-label { font-size: 10px; color: #888888; font-weight: 900; text-transform: uppercase; }
-        .info-value { font-size: 14px; color: #ffffff; font-weight: 700; }
-        .highlight-box { border: 1px solid #444444; padding: 8px; background: #111111; }
+        .info-label { font-size: 9px; color: #666666; font-weight: 900; text-transform: uppercase; }
+        .info-value { font-size: 13px; color: #ffffff; font-weight: 800; }
+        .highlight-box { border: 1px solid #333333; padding: 6px 10px; background: #0a0a0a; }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -83,7 +51,7 @@
     </div>
 
     <main class="max-w-7xl mx-auto">
-        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div id="productGrid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
             </div>
     </main>
 
@@ -92,58 +60,45 @@
     </footer>
 
     <script>
-        // Baza produktów z Opisem, Wagą i Kosztem
         const products = [
-            { 
-                name: "Jordan 4 Black Cat (GX Batch)", 
-                category: "Shoes", 
-                price: "¥460", 
-                weight: "1450g",
-                description: "Najlepszy batch pod względem materiałów. Podeszwa nie pęka, zamsz żyje.",
-                img: "https://via.placeholder.com/400x400?text=Jordan+4+Black+Cat", 
-                link: "#", 
-                bestseller: true 
-            },
-            { 
-                name: "Essentials Hoodie Black", 
-                category: "Clothing", 
-                price: "¥128", 
-                weight: "850g",
-                description: "Gruby materiał, oversize fit. Metki 1:1.",
-                img: "https://via.placeholder.com/400x400?text=Essentials+Hoodie", 
-                link: "#", 
-                bestseller: false 
-            }
+            { name: "Jordan 4 Black Cat", category: "Shoes", price: "¥460", weight: "1450g", img: "https://via.placeholder.com/400x400?text=J4+Black+Cat", link: "#", bestseller: true },
+            { name: "Essentials Hoodie", category: "Clothing", price: "¥128", weight: "850g", img: "https://via.placeholder.com/400x400?text=Essentials", link: "#", bestseller: false },
+            { name: "Yeezy Slide", category: "Shoes", price: "¥110", weight: "600g", img: "https://via.placeholder.com/400x400?text=Yeezy", link: "#", bestseller: true },
+            { name: "LV Belt", category: "Accessories", price: "¥210", weight: "400g", img: "https://via.placeholder.com/400x400?text=LV+Belt", link: "#", bestseller: false },
+            { name: "Nike Tech", category: "Clothing", price: "¥240", weight: "1100g", img: "https://via.placeholder.com/400x400?text=Nike+Tech", link: "#", bestseller: true },
+            { name: "Dunk Panda", category: "Shoes", price: "¥190", weight: "1200g", img: "https://via.placeholder.com/400x400?text=Panda", link: "#", bestseller: false },
+            { name: "Trapstar Set", category: "Clothing", price: "¥320", weight: "1300g", img: "https://via.placeholder.com/400x400?text=Trapstar", link: "#", bestseller: true },
+            { name: "Bapesta White", category: "Shoes", price: "¥380", weight: "1400g", img: "https://via.placeholder.com/400x400?text=Bapesta", link: "#", bestseller: false },
+            { name: "Arc'teryx", category: "Clothing", price: "¥450", weight: "700g", img: "https://via.placeholder.com/400x400?text=Arcteryx", link: "#", bestseller: true },
+            { name: "Goyard Card", category: "Accessories", price: "¥35", weight: "50g", img: "https://via.placeholder.com/400x400?text=Goyard", link: "#", bestseller: false },
+            { name: "Jordan 1 High", category: "Shoes", price: "¥320", weight: "1300g", img: "https://via.placeholder.com/400x400?text=Jordan+1", link: "#", bestseller: false },
+            { name: "Balenciaga Tee", category: "Clothing", price: "¥140", weight: "350g", img: "https://via.placeholder.com/400x400?text=Balenciaga", link: "#", bestseller: true }
         ];
 
         function displayProducts(items) {
             const grid = document.getElementById('productGrid');
+            if(!grid) return;
             grid.innerHTML = items.map(p => `
-                <div class="product-card flex flex-col h-full shadow-2xl overflow-hidden">
+                <div class="product-card flex flex-col h-full shadow-xl">
                     <div class="aspect-square w-full overflow-hidden bg-white/5 border-b border-white/10">
-                        <img src="${p.img}" class="w-full h-full object-cover">
+                        <img src="${p.img}" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500">
                     </div>
-                    
-                    <div class="p-6 flex flex-col flex-grow">
-                        <p class="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-2">${p.category}</p>
-                        <h3 class="font-black text-xl uppercase italic leading-none mb-4">${p.name}</h3>
-                        
-                        <p class="text-xs text-gray-400 mb-6 leading-relaxed">${p.description}</p>
-                        
-                        <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="p-4 flex flex-col flex-grow">
+                        <p class="text-[9px] font-black text-white/30 uppercase tracking-[0.2em] mb-1">${p.category}</p>
+                        <h3 class="font-black text-[11px] uppercase italic leading-tight mb-4 min-h-[24px]">${p.name}</h3>
+                        <div class="grid grid-cols-2 gap-2 mb-4">
                             <div class="highlight-box">
-                                <span class="info-label">Waga:</span>
-                                <p class="info-value text-white">${p.weight}</p>
+                                <span class="info-label text-[8px]">Waga</span>
+                                <p class="info-value text-[11px]">${p.weight}</p>
                             </div>
-                            <div class="highlight-box border-white/40">
-                                <span class="info-label text-white/60">Koszt:</span>
-                                <p class="info-value text-white">${p.price}</p>
+                            <div class="highlight-box">
+                                <span class="info-label text-[8px]">Koszt</span>
+                                <p class="info-value text-[11px]">${p.price}</p>
                             </div>
                         </div>
-
                         <div class="mt-auto">
-                            <a href="${p.link}" target="_blank" class="block w-full text-center bg-white text-black py-4 text-xs font-black uppercase tracking-[0.2em] hover:bg-gray-300 transition duration-300 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)]">
-                                Otwórz w Mulebuy
+                            <a href="${p.link}" target="_blank" class="block w-full text-center bg-white text-black py-2.5 text-[10px] font-black uppercase tracking-[0.1em] hover:bg-gray-200 transition">
+                                MULEBUY
                             </a>
                         </div>
                     </div>
@@ -151,21 +106,26 @@
             `).join('');
         }
 
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const val = e.target.value.toLowerCase();
-            displayProducts(products.filter(p => p.name.toLowerCase().includes(val)));
+        // Event listener dla wyszukiwarki
+        document.addEventListener('DOMContentLoaded', () => {
+            const search = document.getElementById('searchInput');
+            search.addEventListener('input', (e) => {
+                const val = e.target.value.toLowerCase();
+                const filtered = products.filter(p => p.name.toLowerCase().includes(val));
+                displayProducts(filtered);
+            });
+            displayProducts(products); // Start
         });
 
         function filterCategory(cat) {
             const buttons = document.querySelectorAll('.category-btn');
             buttons.forEach(b => b.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            if(event) event.currentTarget.classList.add('active');
 
             if(cat === 'All') return displayProducts(products);
-            displayProducts(products.filter(p => p.category === cat || (cat === 'Bestseller' && p.bestseller)));
+            const filtered = products.filter(p => p.category === cat || (cat === 'Bestseller' && p.bestseller));
+            displayProducts(filtered);
         }
-
-        displayProducts(products);
     </script>
 </body>
 </html>
