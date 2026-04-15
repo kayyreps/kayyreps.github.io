@@ -21,17 +21,24 @@
         .search-input { background: transparent; border: none; border-bottom: 5px solid #000000; color: #000000; font-weight: 900; text-transform: uppercase; }
         .search-input:focus { outline: none; }
         .search-input::placeholder { color: #555555; font-weight: 800; }
-        .info-label { font-size: 9px; color: #666666; font-weight: 900; text-transform: uppercase; }
-        .info-value { font-size: 13px; color: #ffffff; font-weight: 800; }
         .highlight-box { border: 1px solid #333333; padding: 6px 10px; background: #0a0a0a; }
+        .lang-select { background: transparent; border: 2px solid #000000; font-weight: 900; text-transform: uppercase; padding: 5px 10px; font-size: 12px; cursor: pointer; }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <header class="flex flex-col items-center py-12 mb-6">
+    <div class="flex justify-end mb-4">
+        <select id="langSelector" class="lang-select" onchange="changeLanguage()">
+            <option value="pl">PL</option>
+            <option value="en">EN</option>
+            <option value="de">DE</option>
+        </select>
+    </div>
+
+    <header class="flex flex-col items-center py-12 mb-6 text-center">
         <img src="https://i.imgur.com/1dA1uNB.png" alt="KAYYREPS" class="h-24 md:h-32 mb-8">
         <div class="inline-block border-[6px] border-black px-10 py-4">
-            <h1 class="text-3xl md:text-5xl font-black uppercase tracking-tighter italic">Mulebuy Sheet</h1>
+            <h1 id="mainTitle" class="text-3xl md:text-5xl font-black uppercase tracking-tighter italic">Mulebuy Sheet</h1>
         </div>
     </header>
 
@@ -42,17 +49,16 @@
         </div>
         
         <div class="flex flex-wrap gap-4 justify-center">
-            <button onclick="filterCategory('All')" class="category-btn active">Wszystko</button>
-            <button onclick="filterCategory('Shoes')" class="category-btn">Buty</button>
-            <button onclick="filterCategory('Clothing')" class="category-btn">Ubrania</button>
-            <button onclick="filterCategory('Accessories')" class="category-btn">Akcesoria</button>
-            <button onclick="filterCategory('Bestseller')" class="category-btn !bg-black !text-white">Bestsellery</button>
+            <button onclick="filterCategory('All')" id="btnAll" class="category-btn active">Wszystko</button>
+            <button onclick="filterCategory('Shoes')" id="btnShoes" class="category-btn">Buty</button>
+            <button onclick="filterCategory('Clothing')" id="btnClothing" class="category-btn">Ubrania</button>
+            <button onclick="filterCategory('Accessories')" id="btnAcc" class="category-btn">Akcesoria</button>
+            <button onclick="filterCategory('Bestseller')" id="btnBest" class="category-btn !bg-black !text-white italic">Bestsellery</button>
         </div>
     </div>
 
     <main class="max-w-7xl mx-auto">
-        <div id="productGrid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-            </div>
+        <div id="productGrid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6"></div>
     </main>
 
     <footer class="text-center mt-40 py-12">
@@ -60,6 +66,39 @@
     </footer>
 
     <script>
+        const translations = {
+            pl: {
+                search: "WPISZ CZEGO SZUKASZ...",
+                all: "Wszystko",
+                shoes: "Buty",
+                clothing: "Ubrania",
+                acc: "Akcesoria",
+                best: "Bestsellery",
+                weight: "Waga",
+                cost: "Koszt"
+            },
+            en: {
+                search: "TYPE WHAT YOU NEED...",
+                all: "All Items",
+                shoes: "Shoes",
+                clothing: "Clothing",
+                acc: "Accessories",
+                best: "Bestsellers",
+                weight: "Weight",
+                cost: "Cost"
+            },
+            de: {
+                search: "SUCHE STARTEN...",
+                all: "Alle",
+                shoes: "Schuhe",
+                clothing: "Kleidung",
+                acc: "Zubehör",
+                best: "Bestseller",
+                weight: "Gewicht",
+                cost: "Preis"
+            }
+        };
+
         const products = [
             { name: "Jordan 4 Black Cat", category: "Shoes", price: "¥460", weight: "1450g", img: "https://via.placeholder.com/400x400?text=J4+Black+Cat", link: "#", bestseller: true },
             { name: "Essentials Hoodie", category: "Clothing", price: "¥128", weight: "850g", img: "https://via.placeholder.com/400x400?text=Essentials", link: "#", bestseller: false },
@@ -70,14 +109,30 @@
             { name: "Trapstar Set", category: "Clothing", price: "¥320", weight: "1300g", img: "https://via.placeholder.com/400x400?text=Trapstar", link: "#", bestseller: true },
             { name: "Bapesta White", category: "Shoes", price: "¥380", weight: "1400g", img: "https://via.placeholder.com/400x400?text=Bapesta", link: "#", bestseller: false },
             { name: "Arc'teryx", category: "Clothing", price: "¥450", weight: "700g", img: "https://via.placeholder.com/400x400?text=Arcteryx", link: "#", bestseller: true },
-            { name: "Goyard Card", category: "Accessories", price: "¥35", weight: "50g", img: "https://via.placeholder.com/400x400?text=Goyard", link: "#", bestseller: false },
-            { name: "Jordan 1 High", category: "Shoes", price: "¥320", weight: "1300g", img: "https://via.placeholder.com/400x400?text=Jordan+1", link: "#", bestseller: false },
-            { name: "Balenciaga Tee", category: "Clothing", price: "¥140", weight: "350g", img: "https://via.placeholder.com/400x400?text=Balenciaga", link: "#", bestseller: true }
+            { name: "Goyard Card", category: "Accessories", price: "¥35", weight: "50g", img: "https://via.placeholder.com/400x400?text=Goyard", link: "#", bestseller: false }
         ];
+
+        let currentLang = 'pl';
+
+        function changeLanguage() {
+            currentLang = document.getElementById('langSelector').value;
+            const t = translations[currentLang];
+            
+            // Podmiana tekstów
+            document.getElementById('searchInput').placeholder = t.search;
+            document.getElementById('btnAll').innerText = t.all;
+            document.getElementById('btnShoes').innerText = t.shoes;
+            document.getElementById('btnClothing').innerText = t.clothing;
+            document.getElementById('btnAcc').innerText = t.acc;
+            document.getElementById('btnBest').innerText = t.best;
+
+            displayProducts(products); // Odśwież produkty z nowymi etykietami
+        }
 
         function displayProducts(items) {
             const grid = document.getElementById('productGrid');
-            if(!grid) return;
+            const t = translations[currentLang];
+            
             grid.innerHTML = items.map(p => `
                 <div class="product-card flex flex-col h-full shadow-xl">
                     <div class="aspect-square w-full overflow-hidden bg-white/5 border-b border-white/10">
@@ -88,17 +143,17 @@
                         <h3 class="font-black text-[11px] uppercase italic leading-tight mb-4 min-h-[24px]">${p.name}</h3>
                         <div class="grid grid-cols-2 gap-2 mb-4">
                             <div class="highlight-box">
-                                <span class="info-label text-[8px]">Waga</span>
-                                <p class="info-value text-[11px]">${p.weight}</p>
+                                <span class="text-[8px] font-black text-gray-500 uppercase">${t.weight}</span>
+                                <p class="text-[11px] font-black text-white">${p.weight}</p>
                             </div>
                             <div class="highlight-box">
-                                <span class="info-label text-[8px]">Koszt</span>
-                                <p class="info-value text-[11px]">${p.price}</p>
+                                <span class="text-[8px] font-black text-gray-500 uppercase">${t.cost}</span>
+                                <p class="text-[11px] font-black text-white">${p.price}</p>
                             </div>
                         </div>
                         <div class="mt-auto">
-                            <a href="${p.link}" target="_blank" class="block w-full text-center bg-white text-black py-2.5 text-[10px] font-black uppercase tracking-[0.1em] hover:bg-gray-200 transition">
-                                MULEBUY
+                            <a href="${p.link}" target="_blank" class="block w-full text-center bg-white text-black py-2.5 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-gray-200 transition">
+                                LINK
                             </a>
                         </div>
                     </div>
@@ -106,15 +161,9 @@
             `).join('');
         }
 
-        // Event listener dla wyszukiwarki
-        document.addEventListener('DOMContentLoaded', () => {
-            const search = document.getElementById('searchInput');
-            search.addEventListener('input', (e) => {
-                const val = e.target.value.toLowerCase();
-                const filtered = products.filter(p => p.name.toLowerCase().includes(val));
-                displayProducts(filtered);
-            });
-            displayProducts(products); // Start
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            displayProducts(products.filter(p => p.name.toLowerCase().includes(val)));
         });
 
         function filterCategory(cat) {
@@ -123,9 +172,10 @@
             if(event) event.currentTarget.classList.add('active');
 
             if(cat === 'All') return displayProducts(products);
-            const filtered = products.filter(p => p.category === cat || (cat === 'Bestseller' && p.bestseller));
-            displayProducts(filtered);
+            displayProducts(products.filter(p => p.category === cat || (cat === 'Bestseller' && p.bestseller)));
         }
+
+        displayProducts(products);
     </script>
 </body>
 </html>
